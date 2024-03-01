@@ -1,5 +1,6 @@
 syntax = "proto3";
 
+// 同步玩家数据
 message SyncPid{
   int32 Pid=1;
 }
@@ -15,6 +16,7 @@ message Position{
   float V=4;
 }
 
+//玩家广播数据
 message BroadCast{
   int32 Pid=1;
   int32 Tp=2;

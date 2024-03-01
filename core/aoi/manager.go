@@ -141,7 +141,7 @@ func (m *Manager) GetPIDsByPos(x, y float32) (ids []int) {
 //	@receiver m
 //	@param gid
 //	@return PIds
-func (m *Manager) GetPIdsByGid(gid int) (PIds []int) {
+func (m *Manager) GetPIdsByGid(gid int) (pIds []int) {
 	if grid, ok := m.grids[gid]; ok {
 		return grid.GetPlayerIds()
 	}
