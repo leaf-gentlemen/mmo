@@ -1,6 +1,10 @@
 package core
 
 import (
+	"crypto/rand"
+	"math/big"
+	"sync"
+
 	"github.com/gogo/protobuf/proto"
 	"github.com/leaf-gentlemen/mmo/constants"
 	"github.com/leaf-gentlemen/mmo/protos/pubproto"
@@ -8,8 +12,6 @@ import (
 	"github.com/leaf-gentlemen/zinx/ziface"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
-	"math/rand"
-	"sync"
 )
 
 type Player struct {
@@ -21,22 +23,35 @@ type Player struct {
 	V    float32            // 旋转0-360度
 }
 
-var PidGen int32 = 1  // 用来生成玩家ID的计数器
-var IdLock sync.Mutex // 保护PidGen的互斥机制
+var pidGen int32 = 1  // 用来生成玩家ID的计数器
+var idLock sync.Mutex // 保护PidGen的互斥机制
 
 func NewPlayer(conn ziface.IConnection) *Player {
-	IdLock.Lock()
-	id := PidGen
-	PidGen++
-	IdLock.Unlock()
+	idLock.Lock()
+	id := pidGen
+	pidGen++
+	idLock.Unlock()
+
+	var x float32 = 160
+	var y float32 = 134
+	var xRandVal int64 = 10
+	var yRandVal int64 = 20
+
+	if xRand, err := rand.Int(rand.Reader, big.NewInt(xRandVal)); err == nil {
+		x += float32(xRand.Int64())
+	}
+
+	if yRand, err := rand.Int(rand.Reader, big.NewInt(yRandVal)); err == nil {
+		y += float32(yRand.Int64())
+	}
 
 	p := &Player{
 		Pid:  id,
 		Conn: conn,
-		X:    float32(160 + rand.Intn(10)), // 随机在160坐标点 基于X轴偏移若干坐标
-		Y:    0,                            // 高度为0
-		Z:    float32(134 + rand.Intn(17)), // 随机在134坐标点 基于Y轴偏移若干坐标
-		V:    0,                            // 角度为0，尚未实现
+		X:    x, // 随机在160坐标点 基于X轴偏移若干坐标
+		Y:    0, // 高度为0
+		Z:    y, // 随机在134坐标点 基于Y轴偏移若干坐标
+		V:    0, // 角度为0，尚未实现
 	}
 
 	return p

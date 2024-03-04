@@ -54,13 +54,13 @@ func (m *Manager) loadGrid() {
 	}
 }
 
-// GetSurroundGridsByGid
+// getSurroundGridsByGid
 //
 //	@Description: 通过 gid 等到周边的 grid
 //	@receiver m
 //	@param gid
 //	@return *Grid
-func (m *Manager) GetSurroundGridsByGid(gid int) (grids []*Grid) {
+func (m *Manager) getSurroundGridsByGid(gid int) (grids []*Grid) {
 	grid, ok := m.grids[gid]
 	if !ok {
 		return nil
@@ -128,7 +128,7 @@ func (m *Manager) GetGIDByPos(x, y float32) int {
 //	@return ids
 func (m *Manager) GetPIDsByPos(x, y float32) (ids []int) {
 	gid := m.GetGIDByPos(x, y)
-	grids := m.GetSurroundGridsByGid(gid)
+	grids := m.getSurroundGridsByGid(gid)
 	for _, grid := range grids {
 		ids = append(ids, grid.GetPlayerIds()...)
 	}

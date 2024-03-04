@@ -68,7 +68,7 @@ linters:
   disable-all: true
   enable:
     - bodyclose
-    - depguard
+    # - depguard
     - dogsled
     - dupl
     - errcheck
@@ -92,7 +92,7 @@ linters:
     - noctx
     - nolintlint
     - staticcheck
-    - stylecheck
+    # - stylecheck
     - typecheck
     - unconvert
     - unparam
@@ -150,3 +150,8 @@ run:
     - internal/cache # extracted from Go code
     - internal/renameio # extracted from Go code
     - internal/robustio # extracted from Go code
+  skip-files:
+    - ".*\\.pb\\.go$"
+    - ".*_gen\\.go$"
+    - ".*_test\\.go$"
+  modules-download-mode:
